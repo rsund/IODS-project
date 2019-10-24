@@ -1,5 +1,6 @@
 ---
 title: "IODS course project"
+author: "Reijo Sund"
 output:
   html_document:
     theme: cosmo
