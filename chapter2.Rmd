@@ -1,11 +1,73 @@
 # Regression and model validation
 
-*Describe the work you have done this week and summarize your learning.*
-
-- Describe your work and results clearly. 
-- Assume the reader has an introductory course level understanding of writing and reading R code as well as statistical methods.
-- Assume the reader has no previous knowledge of your data or the more advanced methods you are using.
+This week we start the data wrangling, do some exploratory examination of the data
+and fit a simple linear model to the data.
 
 ## Reading data
 
-Code for data creation is available at: 
+Code for data creation is available at:   
+https://github.com/rsund/IODS-project/blob/master/data/create_learning2014.R
+
+Let's read the data in and make sure that gender is converted to factor
+```{r readdata,echo=TRUE,results='hide',message=FALSE,warning=FALSE}
+setwd("~/IODS-project")
+library(dplyr)
+learning2014 <- readxl::read_excel("~/IODS-project/data/learning2014.xlsx") %>%
+  mutate_at(vars(gender), factor)
+```
+As can be seen, the structure looks correct now
+```{r datastructure}
+str(learning2014)
+```
+
+## Exploring data
+
+Let's draw some figures to see how the data looks
+```{r fig1, fig.path="figures/"}
+pairs(learning2014[!names(learning2014)%in%c("gender")],col=learning2014$gender)
+```
+
+```{r fig2, fig.path="figures/", fig.dim=c(10,10), results='hide', message=FALSE}
+library(GGally)
+library(ggplot2)
+
+# create a more advanced plot matrix with ggpairs()
+ggpairs(learning2014, 
+        mapping = aes(col = gender, alpha = 0.3), 
+        lower = list(combo = wrap("facethist", bins = 20))
+        )
+```
+
+## Linear regression
+
+The highest correlation is between *attitude* and *points*, **Cor:** `r cor(learning2014$attitude,learning2014$points)`.
+Let's take a closer look.
+
+```{r}
+qplot(attitude, points, data = learning2014) + geom_smooth(method = "lm")
+```
+
+Let's fit a linear model to the data. Points are explained by attitude.
+The equation for the model is
+$$
+Y_i = \alpha + \beta_1 X_i + \epsilon_i
+$$
+where Y represent points, X is attitude, $\alpha$ is constant, $\beta_1$ is regression
+coefficient for attitude, and $\epsilon$ is a random term.
+
+Estimation of the model yields the following results:
+```{r, results='asis'}
+my_model <- lm(points ~ attitude, data = learning2014)
+results <- summary(my_model)
+
+knitr::kable(results$coefficients, digits=3, caption="Regression coefficients")
+```
+
+Intercept as well as attitude are statistically significant predictors. 
+Coefficient of determination $R^2$ = `r results$r.squared` that is not particularly high.
+Probably some more predictors could be added to the model.
+
+### Diagnostic plots
+```{r fig3, fig.path="figures/"}
+plot(my_model, which=c(1,2,5))
+```

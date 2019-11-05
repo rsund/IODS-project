@@ -64,10 +64,16 @@ write.xlsx(learning2014,file="~/IODS-project/data/learning2014.xlsx")
 
 
 # Read the data back to R and check that structure and a few first observations look the same
+library(readxl)
+
 readtest <- read.xlsx("~/IODS-project/data/learning2014.xlsx")
+readtest2 <- readxl::read_excel("~/IODS-project/data/learning2014.xlsx") %>%
+  mutate_at(vars(gender), factor)
+
  
 str(learning2014)
 str(readtest)
+str(readtest2)
 
 head(learning2014)
 head(readtest)
