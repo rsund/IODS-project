@@ -1,2 +1,2 @@
 # IODS-project
-Template for the IODS course
+Repository for the IODS course

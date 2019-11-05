@@ -1,12 +1,7 @@
 
 # About the project
 
-This is the IODS course, version 4.0. Running for the first time simultaneously also at the **University of Eastern Finland** Kuopio Campus.
+This is the Diary page for the IODS course, version 4.0. Running for the first time simultaneously also at the **University of Eastern Finland** Kuopio Campus.
 
 Link to my project repository is:
 https://github.com/rsund/IODS-project
-
-Link to my project page is:
-https://rsund.github.io/IODS-project/
-
-Works also with windows!
