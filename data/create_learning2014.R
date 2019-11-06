@@ -23,6 +23,7 @@ summary(lrn14)
 str(lrn14)
 
 # Let's check that Attitude is calculated as defined
+# install.packages("dplyr")
 library(dplyr)
 lrn14 <- lrn14 %>% mutate(Asenne=Da+Db+Dc+Dd+De+Df+Dg+Dh+Di+Dj)
 plot(lrn14$Attitude,lrn14$Asenne)
@@ -59,11 +60,13 @@ learning2014 <- lrn14 %>% mutate(
 setwd("~/IODS-project")
 
 # Save created data to folder 'data' as an Excel worksheet
+# install.packages("openxlsx")
 library(openxlsx)
 write.xlsx(learning2014,file="~/IODS-project/data/learning2014.xlsx")
 
 
 # Read the data back to R and check that structure and a few first observations look the same
+# install.packages("readxl")
 library(readxl)
 
 readtest <- read.xlsx("~/IODS-project/data/learning2014.xlsx")
