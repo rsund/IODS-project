@@ -24,7 +24,7 @@ str(learning2014)
 
 Let's draw some figures to see how the data looks
 ```{r fig1, fig.path="figures/"}
-pairs(learning2014[!names(learning2014)%in%c("gender")],col=learning2014$gender)
+pairs(learning2014[!names(learning2014) %in% c("gender")],col=learning2014$gender)
 ```
 
 ```{r fig2, fig.path="figures/", fig.dim=c(10,10), results='hide', message=FALSE}
