@@ -71,3 +71,4 @@ Probably some more predictors could be added to the model.
 ```{r fig3, fig.path="figures/"}
 plot(my_model, which=c(1,2,5))
 ```
+
