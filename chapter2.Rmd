@@ -1,7 +1,7 @@
 # Regression and model validation
 
 This week we start the data wrangling, do some exploratory examination of the data
-and fit a simple linear model to the data (and test github conflicts). 
+and fit a simple linear model to the data (and test merge problems).
 
 ## Reading data
 
