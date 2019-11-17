@@ -3,8 +3,6 @@
 This week we start the data wrangling, do some exploratory examination of the data
 and fit a simple linear model to the data.
 
-And some demoes.
-
 ## Reading data
 
 Code for data creation is available at:   
