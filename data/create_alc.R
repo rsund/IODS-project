@@ -1,65 +1,58 @@
-# Reijo Sund 10.11.2019 - RStudio exercise #3 for the IODS course
+# Reijo Sund 18.11.2019 - RStudio exercise #3 for the IODS course
 
 # Data source: UCI Machine Learning Repository (http://archive.ics.uci.edu/ml/dataset)
-url <- "http://archive.ics.uci.edu/ml/machine-learning-databases/00320/student.zip"
-#oldurl <- "http://archive.ics.uci.edu/ml/machine-learning-databases/00320/.student.zip_old"
-#
 # Metadata available at: https://archive.ics.uci.edu/ml/datasets/Student+Performance
 #   The data are from two identical questionaires related to secondary school student alcohol
 #   comsumption in Portugal.
-#
 # P. Cortez and A. Silva. Using Data Mining to Predict Secondary School Student Performance.
 # http://www3.dsi.uminho.pt/pcortez/student.pdf
 
+source <- "http://archive.ics.uci.edu/ml/machine-learning-databases/00320/student.zip"
 dest <- "~/IODS-project/data/student.zip"
-#olddest <- "~/IODS-project/data/oldstudent.zip"
 
-#1 Load Data
+# Load Data from the web and unzip it
 setwd("~/IODS-project")
-download.file(url,dest)
+download.file(source,dest)
 unzip(dest,exdir="data/student")
 
-#download.file(oldurl,olddest)
-#unzip(olddest,exdir="data/student")
-
-
-# read the math class questionaire data into memory
+# read the datasets into memory
+por <- read.table("~/IODS-project/data/student/student-por.csv", sep = ";", header=TRUE)
 math <- read.table("~/IODS-project/data/student/student-mat.csv", sep = ";", header=TRUE)
 
-# read the portuguese class questionaire data into memory
-por <- read.table("~/IODS-project/data/student/student-por.csv", sep = ";", header = TRUE)
-
-# look at the column names of both data
-colnames(math)
-colnames(por)
-
+# Define own id for both datasets
 library(dplyr)
-
-# Define id for both datasets
 por_id <- por %>% mutate(id=1000+row_number()) 
-math_id <- math %>% mutate(id=2000+row_number()) 
+math_id <- math %>% mutate(id=2000+row_number())
 
 # Which columns vary in datasets
 free_cols <- c("id","failures","paid","absences","G1","G2","G3")
 
-# The rest are common identifier columns used for joining the datasets
+# The rest of the columns are common identifiers used for joining the datasets
 join_cols <- setdiff(colnames(por_id),free_cols)
+
+pormath_free <- por_id %>% bind_rows(math_id) %>% select(one_of(free_cols))
             
-mathpor <- por_id %>% 
+pormath <- por_id %>% 
   bind_rows(math_id) %>%            # Combine datasets to one long data
   group_by(.dots=join_cols) %>%     # Aggregate data (more joining variables than in the example)
   summarise(                        # Calculating required variables from two obs
     n=n(),
-    por.id=min(id),
-    math.id=max(id)
-#    failures,
-#    paid,
-#    absences,
-#    G1,
-#    G2,
-#    G3
+    p.id=min(id),
+    m.id=max(id), 
+    p.failures=first(failures),
+    p.paid=first(paid),
+    p.absences=first(absences),
+    p.G1=first(G1),
+    p.G2=first(G2),
+    p.G3=first(G3),
+    m.failures=last(failures),
+    m.paid=last(paid), 
+    m.absences=last(absences),
+    m.G1=last(G1),
+    m.G2=last(G2),
+    m.G3=last(G3),
     ) %>%
-  filter(n==2, math.id-por.id>650)  # Remove lines that do no have exactly one obs from both data
+  filter(n==2, m.id-p.id>650)  # Remove lines that do not have exactly one obs from both datasets
 
 
 
