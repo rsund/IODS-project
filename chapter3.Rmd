@@ -1,0 +1,10 @@
+# Logistic regression
+
+## Reading data
+
+Code for data wrangling is available at:   
+https://github.com/rsund/IODS-project/blob/master/data/create_alc.R
+
+**NOTE!** There appears to be problems with the original examples using the data
+as there are 370 and not 382 students that clearly belong to both datasets.
+
